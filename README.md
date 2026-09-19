@@ -5,12 +5,6 @@ Implementa el dominio de la API de Pedidos con la arquitectura tradicional
 por capas (`controller` → `service` → `repository` → `entity` / `dto`),
 tal como se enseña en la Clase 1.
 
-Esta es a propósito la versión "antes": en la **Clase 2** se refactoriza en
-vivo hacia SOLID + Arquitectura Hexagonal (Ports & Adapters). En particular,
-fíjate en `OrderService`: mezcla a propósito crear el pedido, "enviar" un
-email y "generar" una factura, y depende directamente de `JpaRepository` —
-es el ejemplo de SRP/DIP de las diapositivas, hecho código real.
-
 ## Stack
 
 * Java 17
@@ -87,13 +81,3 @@ Swagger UI: `http://localhost:8080/swagger-ui.html`.
 * `GET /api/orders/by-customer-email?email=ana.torres@mail.com` — `findByCustomerEmail`
 * `GET /api/orders/by-category?categoryName=Tecnología` — `@Query` con JOIN (JPQL)
 
-## Qué se refactoriza en la Clase 2
-
-* `OrderService` pasa a implementar un `CreateOrderUseCase` (Input Port).
-* Se define `OrderRepositoryPort` (Output Port); `OrderJpaAdapter` lo implementa
-  usando `OrderRepository` (Spring Data JPA) por dentro.
-* `Order`, `OrderItem`, `Product`, `Customer`, `Category` se separan en un
-  `domain/` sin anotaciones de JPA; las entidades `@Entity` quedan en
-  `infrastructure/persistence/`.
-* `sendConfirmationEmail` y `generateInvoice` se extraen a sus propias
-  clases/adapters (SRP).
