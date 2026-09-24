@@ -1,4 +1,4 @@
-package com.curso.pedidos.dto;
+package com.curso.pedidos.product.infrastructure.adapter.in.web;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

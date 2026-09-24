@@ -20,6 +20,41 @@ tal como se enseña en la Clase 1.
 Customer 1 ── * Order 1 ── * OrderItem * ── 1 Product * ── 1 Category
 ```
 
+## Arquitectura hexagonal: módulo `product`
+
+En la rama `feature/hexagonal-products` el módulo de productos se reorganiza
+con Puertos y Adaptadores. El resto (categorías, clientes, pedidos) sigue con la
+arquitectura por capas.
+
+```
+com.curso.pedidos.product
+├── domain
+│   ├── model        Product (Java puro, valida sus invariantes), ProductCategory
+│   └── exception    ProductNotFoundException, CategoryNotFoundException
+├── application
+│   ├── port/in      CreateProductUseCase, GetProductUseCase, SearchProductsUseCase, CreateProductCommand
+│   ├── port/out     ProductRepositoryPort, CategoryLookupPort
+│   └── service      ProductService (implementa los puertos de entrada, sin anotaciones de Spring)
+└── infrastructure
+    ├── adapter/in/web           ProductController, ProductRequest/Response, ProductWebMapper
+    ├── adapter/out/persistence  ProductPersistenceAdapter, CategoryLookupAdapter,
+    │                            ProductEntity (JPA), ProductJpaRepository, ProductPersistenceMapper
+    └── config                   ProductBeanConfig (registra ProductService como bean)
+```
+
+Regla de dependencias: `infrastructure → application → domain`. El dominio y la
+aplicación no importan nada de Spring ni de JPA.
+
+Notas:
+
+* `ProductEntity` conserva el nombre de entidad JPA `Product` y la tabla `products`,
+  así que el esquema y las consultas JPQL existentes no cambian.
+* `OrderService` / `OrderItem` todavía usan `ProductEntity` y `ProductJpaRepository`
+  directamente: es el código legado que se refactoriza en la Clase 2.
+* `DataInitializer` crea los productos de ejemplo a través de `CreateProductUseCase`.
+* Tests unitarios del dominio y del servicio (con puertos en memoria) en
+  `src/test/java/com/curso/pedidos/product`.
+
 ## Cómo correrlo
 
 1. Ten MySQL corriendo localmente (usuario/clave por defecto: `root` / `root`).

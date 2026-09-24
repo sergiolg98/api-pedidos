@@ -1,5 +1,6 @@
-package com.curso.pedidos.entity;
+package com.curso.pedidos.product.infrastructure.adapter.out.persistence;
 
+import com.curso.pedidos.entity.Category;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -10,9 +11,15 @@ import jakarta.persistence.Table;
 
 import java.math.BigDecimal;
 
-@Entity
+/**
+ * Modelo de persistencia (JPA) del producto. Es un detalle de infraestructura:
+ * el dominio usa {@link com.curso.pedidos.product.domain.model.Product}.
+ * Se mantiene el nombre de entidad "Product" para que las consultas JPQL existentes
+ * (p. ej. en OrderRepository) sigan funcionando.
+ */
+@Entity(name = "Product")
 @Table(name = "products")
-public class Product {
+public class ProductEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,10 +35,10 @@ public class Product {
     @JoinColumn(name = "category_id")
     private Category category;
 
-    public Product() {
+    public ProductEntity() {
     }
 
-    public Product(String name, BigDecimal price, Integer stock, Category category) {
+    public ProductEntity(String name, BigDecimal price, Integer stock, Category category) {
         this.name = name;
         this.price = price;
         this.stock = stock;

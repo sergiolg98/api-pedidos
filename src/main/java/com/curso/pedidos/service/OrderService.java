@@ -7,11 +7,11 @@ import com.curso.pedidos.dto.OrderResponse;
 import com.curso.pedidos.entity.Customer;
 import com.curso.pedidos.entity.Order;
 import com.curso.pedidos.entity.OrderItem;
-import com.curso.pedidos.entity.Product;
 import com.curso.pedidos.exception.ResourceNotFoundException;
+import com.curso.pedidos.product.infrastructure.adapter.out.persistence.ProductEntity;
+import com.curso.pedidos.product.infrastructure.adapter.out.persistence.ProductJpaRepository;
 import com.curso.pedidos.repository.CustomerRepository;
 import com.curso.pedidos.repository.OrderRepository;
-import com.curso.pedidos.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -28,11 +28,11 @@ public class OrderService {
 
     private final OrderRepository orderRepository;
     private final CustomerRepository customerRepository;
-    private final ProductRepository productRepository;
+    private final ProductJpaRepository productRepository;
 
     public OrderService(OrderRepository orderRepository,
                          CustomerRepository customerRepository,
-                         ProductRepository productRepository) {
+                         ProductJpaRepository productRepository) {
         this.orderRepository = orderRepository;
         this.customerRepository = customerRepository;
         this.productRepository = productRepository;
@@ -45,7 +45,7 @@ public class OrderService {
         Order order = new Order(customer);
 
         for (OrderItemRequest itemRequest : request.getItems()) {
-            Product product = productRepository.findById(itemRequest.getProductId())
+            ProductEntity product = productRepository.findById(itemRequest.getProductId())
                     .orElseThrow(() -> new ResourceNotFoundException("Producto no encontrado: " + itemRequest.getProductId()));
 
             if (!product.hasStock() || product.getStock() < itemRequest.getQuantity()) {

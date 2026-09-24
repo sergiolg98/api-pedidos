@@ -1,4 +1,4 @@
-package com.curso.pedidos.dto;
+package com.curso.pedidos.product.infrastructure.adapter.in.web;
 
 import java.math.BigDecimal;
 

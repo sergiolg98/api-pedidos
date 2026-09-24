@@ -1,5 +1,6 @@
 package com.curso.pedidos.entity;
 
+import com.curso.pedidos.product.infrastructure.adapter.out.persistence.ProductEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,7 +21,7 @@ public class OrderItem {
 
     @ManyToOne
     @JoinColumn(name = "product_id")
-    private Product product;
+    private ProductEntity product;
 
     @ManyToOne
     @JoinColumn(name = "order_id")
@@ -29,7 +30,7 @@ public class OrderItem {
     public OrderItem() {
     }
 
-    public OrderItem(Product product, Integer quantity) {
+    public OrderItem(ProductEntity product, Integer quantity) {
         this.product = product;
         this.quantity = quantity;
     }
@@ -50,11 +51,11 @@ public class OrderItem {
         this.quantity = quantity;
     }
 
-    public Product getProduct() {
+    public ProductEntity getProduct() {
         return product;
     }
 
-    public void setProduct(Product product) {
+    public void setProduct(ProductEntity product) {
         this.product = product;
     }
 
