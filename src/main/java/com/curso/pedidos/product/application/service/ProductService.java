@@ -10,14 +10,16 @@ import com.curso.pedidos.product.domain.exception.CategoryNotFoundException;
 import com.curso.pedidos.product.domain.exception.ProductNotFoundException;
 import com.curso.pedidos.product.domain.model.Product;
 import com.curso.pedidos.product.domain.model.ProductCategory;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
 
 /**
  * Implementa los casos de uso de productos. Solo depende de puertos:
- * no hay anotaciones de Spring aquí, el bean se registra en ProductBeanConfig.
+ * Spring le inyecta los adaptadores que implementan ProductRepositoryPort y CategoryLookupPort.
  */
+@Service
 public class ProductService implements CreateProductUseCase, GetProductUseCase, SearchProductsUseCase {
 
     private final ProductRepositoryPort productRepository;

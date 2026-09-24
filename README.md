@@ -34,16 +34,16 @@ com.curso.pedidos.product
 ├── application
 │   ├── port/in      CreateProductUseCase, GetProductUseCase, SearchProductsUseCase, CreateProductCommand
 │   ├── port/out     ProductRepositoryPort, CategoryLookupPort
-│   └── service      ProductService (implementa los puertos de entrada, sin anotaciones de Spring)
+│   └── service      ProductService (@Service, implementa los puertos de entrada)
 └── infrastructure
     ├── adapter/in/web           ProductController, ProductRequest/Response, ProductWebMapper
-    ├── adapter/out/persistence  ProductPersistenceAdapter, CategoryLookupAdapter,
-    │                            ProductEntity (JPA), ProductJpaRepository, ProductPersistenceMapper
-    └── config                   ProductBeanConfig (registra ProductService como bean)
+    └── adapter/out/persistence  ProductPersistenceAdapter, CategoryLookupAdapter,
+                                 ProductEntity (JPA), ProductJpaRepository, ProductPersistenceMapper
 ```
 
-Regla de dependencias: `infrastructure → application → domain`. El dominio y la
-aplicación no importan nada de Spring ni de JPA.
+Regla de dependencias: `infrastructure → application → domain`. El dominio no
+importa nada de Spring ni de JPA; la aplicación solo usa `@Service` para registrar
+el servicio como bean.
 
 Notas:
 
