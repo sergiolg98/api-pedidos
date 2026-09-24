@@ -1,10 +1,10 @@
 package com.curso.pedidos.config;
 
+import com.curso.pedidos.customer.application.port.in.CreateCustomerCommand;
+import com.curso.pedidos.customer.application.port.in.CreateCustomerUseCase;
 import com.curso.pedidos.entity.Category;
-import com.curso.pedidos.entity.Customer;
 import com.curso.pedidos.entity.Product;
 import com.curso.pedidos.repository.CategoryRepository;
-import com.curso.pedidos.repository.CustomerRepository;
 import com.curso.pedidos.repository.ProductRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -20,14 +20,17 @@ public class DataInitializer implements CommandLineRunner {
 
     private final CategoryRepository categoryRepository;
     private final ProductRepository productRepository;
-    private final CustomerRepository customerRepository;
 
-    public DataInitializer(CategoryRepository categoryRepository,
-                            ProductRepository productRepository,
-                            CustomerRepository customerRepository) {
+    private final CreateCustomerUseCase createCustomerUseCase;
+
+    public DataInitializer(
+        CategoryRepository categoryRepository,
+        ProductRepository productRepository,
+        CreateCustomerUseCase createCustomerUseCase){
+
         this.categoryRepository = categoryRepository;
         this.productRepository = productRepository;
-        this.customerRepository = customerRepository;
+        this.createCustomerUseCase = createCustomerUseCase;
     }
 
     @Override
@@ -44,8 +47,8 @@ public class DataInitializer implements CommandLineRunner {
         productRepository.save(new Product("Monitor 24 pulgadas", new BigDecimal("189.00"), 0, tecnologia));
         productRepository.save(new Product("Lámpara de escritorio", new BigDecimal("24.50"), 20, hogar));
 
-        customerRepository.save(new Customer("Ana Torres", "ana.torres@mail.com"));
-        customerRepository.save(new Customer("Luis Ramírez", "luis.ramirez@mail.com"));
+        createCustomerUseCase.create(new CreateCustomerCommand("Ana Torres", "ana.torres@mail.com"));
+        createCustomerUseCase.create(new CreateCustomerCommand("Luis Ramírez", "luis.ramirez@mail.com"));
 
         System.out.println("Datos de ejemplo cargados: categorías, productos y clientes.");
     }

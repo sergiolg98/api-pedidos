@@ -1,24 +1,21 @@
-package com.curso.pedidos.dto;
+package com.curso.pedidos.customer.infrastructure.entities;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
+import com.curso.pedidos.customer.domain.model.Customer;
+import jakarta.persistence.*;
 
-public class CustomerDto {
+@Entity(name = "Customer")
+@Table(name = "customers")
+public class CustomerEntity {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @NotBlank(message = "El nombre es obligatorio")
     private String name;
-
-    @NotBlank(message = "El email es obligatorio")
-    @Email(message = "El email no tiene un formato válido")
     private String email;
 
-    public CustomerDto() {
-    }
+    public CustomerEntity(){}
 
-    public CustomerDto(Long id, String name, String email) {
-        this.id = id;
+    public CustomerEntity(String name, String email) {
         this.name = name;
         this.email = email;
     }

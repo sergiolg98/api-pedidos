@@ -1,15 +1,15 @@
 package com.curso.pedidos.service;
 
+import com.curso.pedidos.customer.infrastructure.adapter.out.CustomerJpaRepository;
+import com.curso.pedidos.customer.infrastructure.entities.CustomerEntity;
 import com.curso.pedidos.dto.OrderItemRequest;
 import com.curso.pedidos.dto.OrderItemResponse;
 import com.curso.pedidos.dto.OrderRequest;
 import com.curso.pedidos.dto.OrderResponse;
-import com.curso.pedidos.entity.Customer;
 import com.curso.pedidos.entity.Order;
 import com.curso.pedidos.entity.OrderItem;
 import com.curso.pedidos.entity.Product;
 import com.curso.pedidos.exception.ResourceNotFoundException;
-import com.curso.pedidos.repository.CustomerRepository;
 import com.curso.pedidos.repository.OrderRepository;
 import com.curso.pedidos.repository.ProductRepository;
 import org.springframework.stereotype.Service;
@@ -27,11 +27,11 @@ import java.util.List;
 public class OrderService {
 
     private final OrderRepository orderRepository;
-    private final CustomerRepository customerRepository;
+    private final CustomerJpaRepository customerRepository;
     private final ProductRepository productRepository;
 
     public OrderService(OrderRepository orderRepository,
-                         CustomerRepository customerRepository,
+                         CustomerJpaRepository customerRepository,
                          ProductRepository productRepository) {
         this.orderRepository = orderRepository;
         this.customerRepository = customerRepository;
@@ -39,7 +39,7 @@ public class OrderService {
     }
 
     public OrderResponse createOrder(OrderRequest request) {
-        Customer customer = customerRepository.findById(request.getCustomerId())
+        CustomerEntity customer = customerRepository.findById(request.getCustomerId())
                 .orElseThrow(() -> new ResourceNotFoundException("Cliente no encontrado: " + request.getCustomerId()));
 
         Order order = new Order(customer);

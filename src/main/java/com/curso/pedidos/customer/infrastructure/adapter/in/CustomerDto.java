@@ -1,27 +1,22 @@
-package com.curso.pedidos.entity;
+package com.curso.pedidos.customer.infrastructure.adapter.in;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 
-@Entity
-@Table(name = "customers")
-public class Customer {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class CustomerDto {
     private Long id;
 
+    @NotBlank
     private String name;
 
+    @NotBlank
+    @Email(message = "El email no tiene formato válido")
     private String email;
 
-    public Customer() {
-    }
+    public CustomerDto(){}
 
-    public Customer(String name, String email) {
+    public CustomerDto(Long id, String name, String email) {
+        this.id = id;
         this.name = name;
         this.email = email;
     }

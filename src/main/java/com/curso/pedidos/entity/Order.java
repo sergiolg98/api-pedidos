@@ -1,5 +1,6 @@
 package com.curso.pedidos.entity;
 
+import com.curso.pedidos.customer.infrastructure.entities.CustomerEntity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -26,7 +27,7 @@ public class Order {
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
-    private Customer customer;
+    private CustomerEntity customer;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> items = new ArrayList<>();
@@ -34,7 +35,7 @@ public class Order {
     public Order() {
     }
 
-    public Order(Customer customer) {
+    public Order(CustomerEntity customer) {
         this.customer = customer;
         this.orderDate = LocalDateTime.now();
     }
@@ -60,11 +61,11 @@ public class Order {
         this.orderDate = orderDate;
     }
 
-    public Customer getCustomer() {
+    public CustomerEntity getCustomer() {
         return customer;
     }
 
-    public void setCustomer(Customer customer) {
+    public void setCustomer(CustomerEntity customer) {
         this.customer = customer;
     }
 
