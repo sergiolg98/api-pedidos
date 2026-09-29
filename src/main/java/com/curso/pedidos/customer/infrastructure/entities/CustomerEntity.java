@@ -1,6 +1,5 @@
 package com.curso.pedidos.customer.infrastructure.entities;
 
-import com.curso.pedidos.customer.domain.model.Customer;
 import jakarta.persistence.*;
 
 @Entity(name = "Customer")
