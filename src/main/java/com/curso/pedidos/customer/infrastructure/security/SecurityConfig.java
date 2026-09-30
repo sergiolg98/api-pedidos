@@ -3,6 +3,10 @@ package com.curso.pedidos.customer.infrastructure.security;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.authorization.AuthorizationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.User;
@@ -38,7 +42,7 @@ public class SecurityConfig {
     UserDetailsService users(PasswordEncoder passwordEncoder) {
         UserDetails usuarioNormal = User.withUsername("luis12")
                 .password(passwordEncoder.encode("abc123"))
-                .roles("USER")
+                .roles("USER") // ROLE_ + "..."
                 .build();
 
         UserDetails usuarioAdmin = User.withUsername("claudia_10")
@@ -47,6 +51,18 @@ public class SecurityConfig {
                 .build();
 
         return new InMemoryUserDetailsManager(usuarioAdmin, usuarioNormal);
+    }
+
+    @Bean
+    AuthenticationManager authenticationManager(
+            UserDetailsService users,
+            PasswordEncoder encoder
+    ) {
+        // clase para el acceso a objetos - Java - Spring
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setUserDetailsService(users);
+        provider.setPasswordEncoder(encoder);
+        return new ProviderManager(provider);
     }
 
 }
