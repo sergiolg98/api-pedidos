@@ -9,6 +9,7 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.authorization.AuthorizationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -24,11 +25,15 @@ public class SecurityConfig {
     SecurityFilterChain securityFilterChain (HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
+                .sessionManagement(session ->
+                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(HttpMethod.POST, "/api/auth").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/customers").hasRole("ADMIN")
                         .requestMatchers("/api/**").authenticated()
                         .anyRequest().authenticated())
-                .httpBasic(Customizer.withDefaults());
+                .oauth2ResourceServer(oauth2 ->
+                        oauth2.jwt(Customizer.withDefaults()));
 
         return http.build();
     }
