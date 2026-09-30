@@ -5,6 +5,9 @@ Implementa el dominio de la API de Pedidos con la arquitectura tradicional
 por capas (`controller` → `service` → `repository` → `entity` / `dto`),
 tal como se enseña en la Clase 1.
 
+## IMPORTANTE - Spring Security
+- Crear su archivo `.env` con la key `JWT_SECRET` y asignarle un secreto de 256 bytes min.
+
 ## Stack
 
 * Java 17
